@@ -1,18 +1,23 @@
 import React, {Component} from 'react';
 import SearchBar from './SearchBar';
+import youtube from '../api/youtube';
 
 export default class App extends Component {
-    state = {term: ''};
 
-    onSearchSubmit = (term) => {
-        this.setState(term);
-        console.log(term);
+    onTermSubmit = async (term) => {
+        const response = await youtube.get('/search', {
+            params: {
+                q: term
+            }
+        });
+
+        console.log(response.data.items);
     }
 
     render() {
         return (
             <div className='ui container' style={{marginTop: '2%'}}>
-                <SearchBar onSubmit={this.onSearchSubmit}/>
+                <SearchBar onFormSubmit={this.onTermSubmit}/>
             </div>
         )
     }
